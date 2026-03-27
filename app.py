@@ -9,6 +9,15 @@ def db():
     return sqlite3.connect("clinic.db")
 
 def init():
+    cur.execute("""
+CREATE TABLE IF NOT EXISTS users(
+id INTEGER PRIMARY KEY,
+username TEXT,
+password TEXT,
+role TEXT
+)
+""")
+    cur.execute("INSERT OR IGNORE INTO users VALUES (1,'admin','1234','admin')")
     con = db()
     cur = con.cursor()
 
@@ -71,7 +80,32 @@ def add_visit():
     """,(request.form["patient"], request.form["doctor"],
          datetime.now(), queue,
          request.form["diagnosis"], request.form["treatment"]))
+@app.route("/login", methods=["GET","POST"])
+def login():
+    if request.method == "POST":
+        user = request.form["username"]
+        pw = request.form["password"]
 
+        con = db()
+        cur = con.cursor()
+        cur.execute("SELECT * FROM users WHERE username=? AND password=?", (user,pw))
+        data = cur.fetchone()
+        con.close()
+
+        if data:
+            session["user"] = user
+            session["role"] = data[3]
+            return redirect("/")
+        else:
+            return "خطأ في البيانات"
+
+    return render_template("login.html")
+    @app.route("/logout")
+def logout():
+    session.clear()
+    return redirect("/login")
+    if "user" not in session:
+    return redirect("/login")
     con.commit()
     con.close()
     return redirect("/")
