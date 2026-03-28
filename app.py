@@ -6,6 +6,9 @@ def check_role(roles):
     return True
 app = Flask(__name__)
 app.secret_key = 'secret123'
+from werkzeug.security import generate_password_hash, check_password_hash
+hashed = generate_password_hash(password)
+check_password_hash(hashed, password)
 
 # إنشاء قاعدة البيانات
 def init_db():
@@ -31,20 +34,27 @@ c.execute("INSERT OR IGNORE INTO users (id, username, password, role) VALUES (3,
     conn.close()
 
 init_db()
+#سجل العمليات
+@app.route('/logs')
+def logs():
+    if not check_role(['admin']):
+        return "🚫 غير مصرح"
 
+    conn = sqlite3.connect('clinic.db')
+    c = conn.cursor()
+    c.execute("SELECT * FROM logs ORDER BY id DESC")
+    data = c.fetchall()
+    conn.close()
+
+    return render_template('logs.html', logs=data)
 # تسجيل الدخول
 @app.route('/login', methods=['GET', 'POST'])
-def login():
-    if request.method == 'POST':
-        u = request.form['username']
-        p = request.form['password']
-
-        conn = sqlite3.connect('clinic.db')
-        c = conn.cursor()
-        c.execute("SELECT * FROM users WHERE username=? AND password=?", (u,p))
-        user = c.fetchone()
-        conn.close()
-
+def log_action(user, action):
+    conn = sqlite3.connect('clinic.db')
+    c = conn.cursor()
+    c.execute("INSERT INTO logs (user, action, time) VALUES (?,?,datetime('now'))", (user, action))
+    conn.commit()
+    conn.close()
         if user:
     session['user'] = user[1]
     session['role'] = user[3]
@@ -72,21 +82,28 @@ def patients():
 # إضافة مريض
 @app.route('/add_patient', methods=['GET','POST'])
 def add_patient():
+    if not check_role(['admin','reception']):
+        return "🚫 غير مصرح"
+
     if request.method == 'POST':
         name = request.form['name']
         phone = request.form['phone']
+        age = request.form['age']
+        address = request.form['address']
         notes = request.form['notes']
 
         conn = sqlite3.connect('clinic.db')
         c = conn.cursor()
-        c.execute("INSERT INTO patients (name, phone, notes) VALUES (?,?,?)",(name,phone,notes))
+        c.execute("INSERT INTO patients (name, phone, age, address, notes) VALUES (?,?,?,?,?)",
+                  (name, phone, age, address, notes))
         conn.commit()
         conn.close()
+
+        log_action(session['user'], f"إضافة مريض {name}")
 
         return redirect('/patients')
 
     return render_template('add_patient.html')
-
 # الحجز
 @app.route('/appointments', methods=['GET','POST'])
 def appointments():
@@ -104,7 +121,30 @@ def appointments():
     conn.close()
 
     return render_template('appointments.html', appointments=data)
+#الفواتير
+@app.route('/invoices', methods=['GET','POST'])
+def invoices():
+    if not check_role(['admin','accountant']):
+        return "🚫 غير مصرح"
 
+    conn = sqlite3.connect('clinic.db')
+    c = conn.cursor()
+
+    if request.method == 'POST':
+        patient_id = request.form['patient_id']
+        amount = request.form['amount']
+
+        c.execute("INSERT INTO invoices (patient_id, amount, status, date) VALUES (?,?,?,date('now'))",
+                  (patient_id, amount, 'unpaid'))
+        conn.commit()
+
+        log_action(session['user'], f"إنشاء فاتورة للمريض {patient_id}")
+
+    c.execute("SELECT * FROM invoices")
+    data = c.fetchall()
+    conn.close()
+
+    return render_template('invoices.html', invoices=data)
 # تسجيل خروج
 @app.route('/logout')
 def logout():
