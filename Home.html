@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>مستوصف الزهراء</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;600&display=swap" rel="stylesheet">
+
+<style>
+body {
+    margin: 0;
+    font-family: 'Cairo', sans-serif;
+    background: #f5f7fa;
+}
+
+header {
+    background: linear-gradient(90deg, #0d6efd, #0dcaf0);
+    color: white;
+    padding: 15px;
+    text-align: center;
+    font-size: 22px;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    background: #fff;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+nav a {
+    padding: 15px 20px;
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+}
+
+nav a:hover {
+    color: #0d6efd;
+}
+
+.hero {
+    background: url('https://images.unsplash.com/photo-1580281657521-6b48c3e1d8a4') center/cover;
+    height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-size: 28px;
+    font-weight: bold;
+}
+
+.container {
+    padding: 20px;
+}
+
+.cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.card {
+    background: white;
+    padding: 20px;
+    border-radius: 15px;
+    text-align: center;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: 0.3s;
+}
+
+.card:hover {
+    transform: translateY(-10px);
+}
+
+.btn {
+    background: #0d6efd;
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+footer {
+    background: #222;
+    color: white;
+    text-align: center;
+    padding: 15px;
+    margin-top: 30px;
+}
+</style>
+</head>
+
+<body>
+
+<header>
+    مستوصف الزهراء الطبي
+</header>
+
+<nav>
+    <a href="#">الرئيسية</a>
+    <a href="#">الأطباء</a>
+    <a href="#">الحجوزات</a>
+    <a href="#">التقارير</a>
+    <a href="#">تواصل معنا</a>
+</nav>
+
+<div class="hero">
+    رعاية طبية متكاملة بأحدث التقنيات
+</div>
+
+<div class="container">
+
+    <h2>الخدمات</h2>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>حجز موعد</h3>
+            <p>احجز موعدك بسهولة</p>
+            <button class="btn">دخول</button>
+        </div>
+
+        <div class="card">
+            <h3>ملف المريض</h3>
+            <p>عرض بيانات المريض</p>
+            <button class="btn">دخول</button>
+        </div>
+
+        <div class="card">
+            <h3>العيادات</h3>
+            <p>كل التخصصات الطبية</p>
+            <button class="btn">عرض</button>
+        </div>
+
+        <div class="card">
+            <h3>التقارير</h3>
+            <p>نتائج التحاليل</p>
+            <button class="btn">عرض</button>
+        </div>
+
+    </div>
+
+</div>
+
+<footer>
+    © 2026 مستوصف الزهراء - جميع الحقوق محفوظة
+</footer>
+
+</body>
+</html>
