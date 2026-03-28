@@ -1,0 +1,15 @@
+<h2>المرضى</h2>
+
+<a href="/add_patient">➕ إضافة مريض</a>
+
+<table border="1">
+<tr><th>الاسم</th><th>الهاتف</th><th>ملاحظات</th></tr>
+
+{% for p in patients %}
+<tr>
+<td>{{p[1]}}</td>
+<td>{{p[2]}}</td>
+<td>{{p[3]}}</td>
+</tr>
+{% endfor %}
+</table>
