@@ -1,0 +1,75 @@
+.sidebar{
+width:220px;
+height:100vh;
+background:linear-gradient(#2b5c9a,#1e3a5f);
+position:fixed;
+right:0;
+top:0;
+padding-top:20px;
+}
+
+.sidebar button{
+width:180px;
+margin:8px 20px;
+padding:10px;
+background:#3d6db5;
+border:none;
+color:white;
+border-radius:6px;
+font-size:14px;
+cursor:pointer;
+}
+
+.sidebar button:hover{
+background:#4f83d1;
+}
+.topbar{
+background:#2f8f3b;
+color:white;
+padding:10px;
+font-size:18px;
+text-align:center;
+font-weight:bold;
+}
+input,select{
+padding:8px;
+border:1px solid #ccc;
+border-radius:5px;
+width:200px;
+font-size:14px;
+}
+table{
+width:100%;
+border-collapse:collapse;
+margin-top:15px;
+}
+
+table th{
+background:#2f8f3b;
+color:white;
+padding:8px;
+}
+
+table td{
+border:1px solid #ddd;
+padding:8px;
+text-align:center;
+}
+.action-buttons button{
+padding:8px 14px;
+margin:4px;
+border:none;
+border-radius:5px;
+color:white;
+font-size:13px;
+}
+
+.btn-add{background:#2f8f3b;}
+.btn-delete{background:#d32f2f;}
+.btn-edit{background:#ff9800;}
+.btn-print{background:#2196f3;}
+.btn-excel{background:#4caf50;}
+body{
+font-family:'Cairo',sans-serif;
+background:#f4f6f9;
+}
