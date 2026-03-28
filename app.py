@@ -1,6 +1,9 @@
 from flask import Flask, render_template, request, redirect, url_for, session
 import sqlite3
-
+def check_role(roles):
+    if 'role' not in session or session['role'] not in roles:
+        return False
+    return True
 app = Flask(__name__)
 app.secret_key = 'secret123'
 
@@ -10,29 +13,16 @@ def init_db():
     c = conn.cursor()
 
     c.execute('''
-    CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY,
-        username TEXT,
-        password TEXT
-    )
-    ''')
-
-    c.execute('''
-    CREATE TABLE IF NOT EXISTS patients (
-        id INTEGER PRIMARY KEY,
-        name TEXT,
-        phone TEXT,
-        notes TEXT
-    )
-    ''')
-
-    c.execute('''
-    CREATE TABLE IF NOT EXISTS appointments (
-        id INTEGER PRIMARY KEY,
-        patient_name TEXT,
-        date TEXT
-    )
-    ''')
+CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY,
+    username TEXT,
+    password TEXT,
+    role TEXT
+)
+''')
+   c.execute("INSERT OR IGNORE INTO users (id, username, password, role) VALUES (1,'admin','1234','admin')")
+c.execute("INSERT OR IGNORE INTO users (id, username, password, role) VALUES (2,'doctor','1234','doctor')")
+c.execute("INSERT OR IGNORE INTO users (id, username, password, role) VALUES (3,'reception','1234','reception')")
 
     # إنشاء مستخدم افتراضي
     c.execute("INSERT OR IGNORE INTO users (id, username, password) VALUES (1,'admin','1234')")
@@ -56,10 +46,9 @@ def login():
         conn.close()
 
         if user:
-            session['user'] = u
-            return redirect(url_for('dashboard'))
-        else:
-            return "بيانات غير صحيحة"
+    session['user'] = user[1]
+    session['role'] = user[3]
+    return redirect(url_for('dashboard'))
 
     return render_template('login.html')
 
