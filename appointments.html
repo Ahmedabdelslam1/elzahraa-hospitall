@@ -1,0 +1,18 @@
+<h2>الحجوزات</h2>
+
+<form method="POST">
+<input name="name" placeholder="اسم المريض">
+<input type="date" name="date">
+<button>حجز</button>
+</form>
+
+<table border="1">
+<tr><th>الاسم</th><th>التاريخ</th></tr>
+
+{% for a in appointments %}
+<tr>
+<td>{{a[1]}}</td>
+<td>{{a[2]}}</td>
+</tr>
+{% endfor %}
+</table>
