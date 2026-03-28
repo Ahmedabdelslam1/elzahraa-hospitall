@@ -88,22 +88,21 @@ def add_patient():
     if request.method == 'POST':
         name = request.form['name']
         phone = request.form['phone']
-        age = request.form['age']
-        address = request.form['address']
         notes = request.form['notes']
 
         conn = sqlite3.connect('clinic.db')
         c = conn.cursor()
-        c.execute("INSERT INTO patients (name, phone, age, address, notes) VALUES (?,?,?,?,?)",
-                  (name, phone, age, address, notes))
+        c.execute("INSERT INTO patients (name, phone, notes) VALUES (?,?,?)",(name,phone,notes))
         conn.commit()
         conn.close()
-
-        log_action(session['user'], f"إضافة مريض {name}")
 
         return redirect('/patients')
 
     return render_template('add_patient.html')
+
+        log_action(session['user'], f"إضافة مريض {name}")
+
+    
 # الحجز
 @app.route('/appointments', methods=['GET','POST'])
 def appointments():
